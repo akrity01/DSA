@@ -1,21 +1,25 @@
 class Solution {
     public int maxProduct(int[] nums) {
-        int maxEnding = nums[0];
-        int minEnding = nums[0];
-        int result = nums[0];
+        int max = nums[0];
+        int min = nums[0];
+        int ans = nums[0];
 
         for (int i = 1; i < nums.length; i++) {
-            int curr = nums[i];
+            int x = nums[i];
 
-            int tempMax = Math.max(curr, Math.max(curr * maxEnding, curr * minEnding));
-            int tempMin = Math.min(curr, Math.min(curr * maxEnding, curr * minEnding));
+            // If current number is negative, swap
+            if (x < 0) {
+                int temp = max;
+                max = min;
+                min = temp;
+            }
 
-            maxEnding = tempMax;
-            minEnding = tempMin;
+            max = Math.max(x, x * max);
+            min = Math.min(x, x * min);
 
-            result = Math.max(result, maxEnding);
+            ans = Math.max(ans, max);
         }
 
-        return result;
+        return ans;
     }
 }
