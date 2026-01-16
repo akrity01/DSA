@@ -1,23 +1,28 @@
 class Solution {
-    public boolean isHappy(int n) {
-        int slow = n;
-        int fast = getSumOfSquares(n);
 
-        while (fast != 1 && slow != fast) {
-            slow = getSumOfSquares(slow);
-            fast = getSumOfSquares(getSumOfSquares(fast));
-        }
-
-        return fast == 1;
-    }
-
-    private int getSumOfSquares(int n) {
+    // Helper to compute sum of squares of digits
+    private int getNext(int n) {
         int sum = 0;
         while (n > 0) {
-            int rem = n % 10;
-            sum += rem * rem;
+            int digit = n % 10;
+            sum += digit * digit;
             n /= 10;
         }
         return sum;
+    }
+
+    public boolean isHappy(int n) {
+        HashSet<Integer> seen = new HashSet<>();
+
+        while (n != 1) {
+            if (seen.contains(n)) {
+                return false;   // cycle detected
+            }
+
+            seen.add(n);
+            n = getNext(n);
+        }
+
+        return true;  // reached 1 → happy
     }
 }
