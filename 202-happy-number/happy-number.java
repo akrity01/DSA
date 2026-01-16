@@ -1,6 +1,5 @@
 class Solution {
 
-    // Helper to compute sum of squares of digits
     private int getNext(int n) {
         int sum = 0;
         while (n > 0) {
@@ -12,17 +11,14 @@ class Solution {
     }
 
     public boolean isHappy(int n) {
-        HashSet<Integer> seen = new HashSet<>();
+        int slow = n;
+        int fast = getNext(n);
 
-        while (n != 1) {
-            if (seen.contains(n)) {
-                return false;   // cycle detected
-            }
-
-            seen.add(n);
-            n = getNext(n);
+        while (fast != 1 && slow != fast) {
+            slow = getNext(slow);
+            fast = getNext(getNext(fast));
         }
 
-        return true;  // reached 1 → happy
+        return fast == 1;
     }
 }
