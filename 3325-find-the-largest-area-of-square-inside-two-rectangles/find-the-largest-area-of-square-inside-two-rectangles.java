@@ -1,28 +1,29 @@
 class Solution {
-    public long largestSquareArea(int[][] bottomLeft, int[][] topRight) {
-        int n = bottomLeft.length;
-        long maxSide = 0;
+    public long largestSquareArea(int[][] bl, int[][] tr) {
+        int n = bl.length;
+        long best = 0;
 
         for (int i = 0; i < n; i++) {
+            int ax1 = bl[i][0], ay1 = bl[i][1];
+            int ax2 = tr[i][0], ay2 = tr[i][1];
+
             for (int j = i + 1; j < n; j++) {
 
-                // intersection coordinates
-                long x1 = Math.max(bottomLeft[i][0], bottomLeft[j][0]);
-                long y1 = Math.max(bottomLeft[i][1], bottomLeft[j][1]);
+                // FAST REJECTION
+                if (tr[j][0] <= ax1 || bl[j][0] >= ax2 ||
+                    tr[j][1] <= ay1 || bl[j][1] >= ay2)
+                    continue;
 
-                long x2 = Math.min(topRight[i][0], topRight[j][0]);
-                long y2 = Math.min(topRight[i][1], topRight[j][1]);
+                int xOverlap = Math.min(ax2, tr[j][0]) - Math.max(ax1, bl[j][0]);
+                int yOverlap = Math.min(ay2, tr[j][1]) - Math.max(ay1, bl[j][1]);
 
-                long width = x2 - x1;
-                long height = y2 - y1;
+                int side = Math.min(xOverlap, yOverlap);
 
-                if (width > 0 && height > 0) {
-                    long side = Math.min(width, height);
-                    maxSide = Math.max(maxSide, side);
-                }
+                if (side > best)
+                    best = side;
             }
         }
 
-        return maxSide * maxSide;
+        return best * best;
     }
 }
