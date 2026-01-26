@@ -2,22 +2,23 @@ import java.util.*;
 
 class Solution {
     public List<List<Integer>> minimumAbsDifference(int[] arr) {
-        Arrays.sort(arr);
-        
+        Arrays.sort(arr); // O(n log n)
+
         int minDiff = Integer.MAX_VALUE;
-        
-       
-        for(int i = 1; i < arr.length; i++){
-            minDiff = Math.min(minDiff, arr[i] - arr[i - 1]);
-        }
-        
-        List<List<Integer>> result = new ArrayList<>();
-        for(int i = 1; i < arr.length; i++){
-            if(arr[i] - arr[i - 1] == minDiff){
-                result.add(Arrays.asList(arr[i - 1], arr[i]));
+        List<List<Integer>> res = new ArrayList<>();
+
+        for (int i = 1; i < arr.length; i++) {
+            int diff = arr[i] - arr[i - 1];
+
+            if (diff < minDiff) {
+                minDiff = diff;
+                res.clear(); // remove old bigger-diff pairs
+                res.add(Arrays.asList(arr[i - 1], arr[i]));
+            } 
+            else if (diff == minDiff) {
+                res.add(Arrays.asList(arr[i - 1], arr[i]));
             }
         }
-        
-        return result;
+        return res;
     }
 }
