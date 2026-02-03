@@ -11,6 +11,6 @@ int rem = x%10;
 revHalf = revHalf *10+rem;
  x=x/10; 
          }
-          return (revHalf==x || x==revHalf/10);
+          return (x==revHalf || x==revHalf/10);
     }
 }
