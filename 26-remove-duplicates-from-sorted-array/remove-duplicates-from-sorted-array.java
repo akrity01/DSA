@@ -17,8 +17,8 @@ class Solution {
         //     }
         //  }
         //  return k;
-        int i = 0;
-for (int j = 1; j < nums.length; j++) {
+        int i = 0, n=nums.length;
+for (int j = 1; j < n; j++) {
     if (nums[j] != nums[i]) {
         i++;
         nums[i] = nums[j];
