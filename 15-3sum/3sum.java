@@ -1,38 +1,41 @@
+import java.util.*;
+
 class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
-        List<List<Integer>> res = new ArrayList<>();
-        Arrays.sort(nums);
+        List<List<Integer>> result = new ArrayList<>();
 
+        Arrays.sort(nums);  // Step 1: sort array
         int n = nums.length;
 
-        for (int i = 0; i < n - 2; i++) {
+        for (int i = 0; i < n; i++) {
 
-            // Skip duplicates
+            // Step 2: skip duplicate fixed elements
             if (i > 0 && nums[i] == nums[i - 1]) continue;
 
-            // Early break (because sorted)
-            if (nums[i] > 0) break;
+            int left = i + 1;
+            int right = n - 1;
 
-            int l = i + 1, r = n - 1;
+            while (left < right) {
+                int currentSum = nums[i] + nums[left] + nums[right];
 
-            while (l < r) {
-                int sum = nums[i] + nums[l] + nums[r];
+                if (currentSum == 0) {
+                    result.add(Arrays.asList(nums[i], nums[left], nums[right]));
 
-                if (sum == 0) {
-                    res.add(Arrays.asList(nums[i], nums[l], nums[r]));
-                    l++;
-                    r--;
+                    // Step 3: skip duplicates for left and right
+                    while (left < right && nums[left] == nums[left + 1]) left++;
+                    while (left < right && nums[right] == nums[right - 1]) right--;
 
-                    while (l < r && nums[l] == nums[l - 1]) l++;
-                    while (l < r && nums[r] == nums[r + 1]) r--;
-                }
-                else if (sum < 0) {
-                    l++;
-                } else {
-                    r--;
+                    left++;
+                    right--;
+                } 
+                else if (currentSum < 0) {
+                    left++;   // sum chhota hai, bada karne ke liye left++
+                } 
+                else {
+                    right--;  // sum bada hai, kam karne ke liye right--
                 }
             }
         }
-        return res;
+        return result;
     }
 }
