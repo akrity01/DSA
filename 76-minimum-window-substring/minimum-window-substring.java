@@ -1,46 +1,34 @@
 class Solution {
     public String minWindow(String s, String t) {
-
-        if (t.length() > s.length()) return "";
-
-        int[] need = new int[128];   // ASCII characters
+        if (s.length() == 0 || t.length() == 0) return "";
+        int[] freq = new int[128];
         for (char c : t.toCharArray()) {
-            need[c]++;
+            freq[c]++;
         }
-
-        int left = 0;
+        int left = 0, right = 0;
+        int required = t.length();
         int minLen = Integer.MAX_VALUE;
         int start = 0;
-        int required = t.length();
-
-        for (int right = 0; right < s.length(); right++) {
-
-            char c = s.charAt(right);
-
-            if (need[c] > 0) {
+        while (right < s.length()) {
+            char r = s.charAt(right);
+            if (freq[r] > 0) {
                 required--;
             }
-            need[c]--;
-
-            // Window valid when required == 0
+            freq[r]--;
+            right++;
             while (required == 0) {
-
-                if (right - left + 1 < minLen) {
-                    minLen = right - left + 1;
+                if (right - left < minLen) {
+                    minLen = right - left;
                     start = left;
                 }
-
-                char leftChar = s.charAt(left);
-                need[leftChar]++;
-
-                if (need[leftChar] > 0) {
+                char l = s.charAt(left);
+                freq[l]++;
+                if (freq[l] > 0) {
                     required++;
                 }
-
                 left++;
             }
         }
-
         return minLen == Integer.MAX_VALUE ? "" : s.substring(start, start + minLen);
     }
 }
