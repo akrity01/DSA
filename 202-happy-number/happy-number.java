@@ -16,7 +16,6 @@ class Solution {
         {
             slow= getnextNumber(slow);
             fast = getnextNumber(getnextNumber(fast));
-            if (slow== fast) return false;
         }
         return fast==1;
     }
