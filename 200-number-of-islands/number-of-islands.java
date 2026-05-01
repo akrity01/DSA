@@ -1,15 +1,23 @@
-class Solution {
-    public int numIslands(char[][] grid) {
-        int count = 0;
-        int m = grid.length;
-        int n = grid[0].length;
+import java.util.*;
 
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                
-                if (grid[i][j] == '1') {
+class Solution {
+
+    int[] dx = {-1, 1, 0, 0};
+    int[] dy = {0, 0, -1, 1};
+
+    public int numIslands(char[][] grid) {
+        int n = grid.length;
+        int m = grid[0].length;
+
+        boolean[][] visited = new boolean[n][m];
+        int count = 0;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+
+                if (grid[i][j] == '1' && !visited[i][j]) {
                     count++;
-                    dfs(grid, i, j, m, n);
+                    dfs(grid, visited, i, j, n, m);
                 }
             }
         }
@@ -17,15 +25,23 @@ class Solution {
         return count;
     }
 
-    public void dfs(char[][] grid, int i, int j, int m, int n) {
-        
-        if (i < 0 || j < 0 || i >= m || j >= n || grid[i][j] == '0') {
-            return;
+    public void dfs(char[][] grid, boolean[][] visited, int i, int j, int n, int m) {
+
+        visited[i][j] = true;
+        for (int k = 0; k < 4; k++) {
+            int newRow = i + dx[k];
+            int newCol = j + dy[k];
+
+            if (isValid(newRow, newCol, n, m) &&
+                grid[newRow][newCol] == '1' &&
+                !visited[newRow][newCol]) {
+
+                dfs(grid, visited, newRow, newCol, n, m);
+            }
         }
-        grid[i][j] = '0';
-        dfs(grid, i + 1, j, m, n); 
-        dfs(grid, i - 1, j, m, n); 
-        dfs(grid, i, j + 1, m, n); 
-        dfs(grid, i, j - 1, m, n);
+    }
+
+    public boolean isValid(int i, int j, int n, int m) {
+        return (i >= 0 && j >= 0 && i < n && j < m);
     }
 }
